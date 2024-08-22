@@ -21,19 +21,7 @@ mod visual_signal {
     }
 
     impl ViewSignal {
-        pub fn new<
-            T: Sample
-                + Default
-                + SizedSample
-                + FromSample<T>
-                + Debug
-                + Div<T, Output = f32>
-                + Div<f32, Output = T>
-                + Display
-                + AddAssign
-                + Mul<f32, Output = T>
-                + Mul<T, Output = f32>,
-        >(
+        pub fn new<T: Sample + Default + SizedSample + FromSample<T> + Debug + AddAssign>(
             sound: &[T],
             desired_size: [usize; 2],
             wave_color: [u8; 3],
@@ -76,6 +64,12 @@ mod visual_signal {
                 [self.image.width() as usize, self.image.height() as usize],
             )
         }
+        pub fn to_bytes(&self) -> Vec<u8> {
+            self.image.to_vec()
+        }
+        pub fn as_bytes(&self) -> &[u8] {
+            self.image.as_raw()
+        }
     }
 }
 
@@ -107,18 +101,7 @@ mod audio_process {
     }
 
     pub fn wave_height_ratio<
-        T: Sample
-            + Default
-            + SizedSample
-            + FromSample<T>
-            + Debug
-            + Div<T, Output = f32>
-            + Div<f32, Output = T>
-            + Display
-            + AddAssign
-            + Mul<f32, Output = T>
-            + Into<U>
-            + Mul<T, Output = f32>,
+        T: Sample + Default + SizedSample + FromSample<T> + Debug + AddAssign + Into<U>,
         U,
     >(
         sound: &[T],
